@@ -1,0 +1,39 @@
+*react-compiler-badge.txt*  Highlight React Compiler optimizations
+
+Author:  ycycwx
+License: MIT
+
+INTRODUCTION                                  *react-compiler-badge*
+
+This plugin highlights React components that have been optimized by the
+React Compiler (experimental). It uses `babel-plugin-react-compiler` to
+detect optimized functions.
+
+SETUP                                         *react-compiler-badge-setup*
+
+If you are using lazy.nvim:
+>
+    {
+      "ycycwx/react-compiler-badge.nvim",
+      build = "npm ci",
+      opts = {},
+    }
+<
+
+CONFIGURATION                                 *react-compiler-badge-config*
+
+You can configure the highlights and icon by passing a table to the setup
+function:
+>
+    require("react-compiler-badge").setup({
+      highlight = {
+        bg = "#1a6bbc",
+        fg = "#ffffff",
+        bold = true,
+      },
+      icon = " Memo✨ ",
+    })
+<
+
+vim:tw=78:ts=8:ft=help:norl:
+
