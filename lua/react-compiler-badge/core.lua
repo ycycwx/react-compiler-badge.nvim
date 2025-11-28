@@ -32,8 +32,6 @@ function M.setup(config)
       stdin_close = true,
       cwd = plugin_root, -- Execute in plugin root so it finds node_modules
     }, function(obj)
-      print(obj.stderr)
-      print(obj.stdout)
       if obj.code ~= 0 then
         return
       end
@@ -65,7 +63,7 @@ function M.setup(config)
     end)
   end
 
-  vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
+  vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "BufWinEnter" }, {
     pattern = { "*.tsx", "*.jsx", "*.ts", "*.js" },
     callback = function(ev)
       update_markers(ev.buf)
