@@ -6,11 +6,7 @@ if vim.g.loaded_react_compiler_badge == 1 then
 end
 vim.g.loaded_react_compiler_badge = 1
 
--- Note: We don't automatically call setup() here to allow the user
--- to configure it via require("react-compiler-badge").setup({})
--- However, if you want zero-config (and the user didn't provide opts),
--- you could technically trigger a default setup here, but it's cleaner to let Lazy or the user do it.
-
--- To support the "zero config" goal better:
--- We can expose a user command to manually trigger analysis if they want,
--- or just rely on the user calling setup() in their init.lua / lazy config.
+-- Automatically setup with defaults.
+-- If the user provides configuration via setup({...}), it will simply re-run setup
+-- and update the configuration (since we use an augroup to clear previous autocommands).
+require("react-compiler-badge").setup()

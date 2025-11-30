@@ -63,7 +63,9 @@ function M.setup(config)
     end)
   end
 
+  local group = vim.api.nvim_create_augroup("ReactCompilerBadge", { clear = true })
   vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "BufWinEnter" }, {
+    group = group,
     pattern = { "*.tsx", "*.jsx", "*.ts", "*.js" },
     callback = function(ev)
       update_markers(ev.buf)
