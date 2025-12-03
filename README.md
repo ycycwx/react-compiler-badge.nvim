@@ -26,8 +26,8 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
   build = "npm ci", -- Installs dependencies for analyzer.js
   event = {
     "BufReadPost *.tsx",
-    "BufReadPost *.jsx",
-    -- "BufReadPost *.ts",
+    "BufReadPost *.ts",
+    -- "BufReadPost *.jsx",
     -- "BufReadPost *.js",
   },
   opts = {
@@ -44,8 +44,8 @@ use({
   run = "npm ci",
   event = {
     "BufReadPost *.tsx",
-    "BufReadPost *.jsx",
-    -- "BufReadPost *.ts",
+    "BufReadPost *.ts",
+    -- "BufReadPost *.jsx",
     -- "BufReadPost *.js",
   },
   config = function()
