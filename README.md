@@ -78,13 +78,6 @@ require("react-compiler-badge").setup({
 })
 ```
 
-## Directory Structure
-
-- `doc/`: Vim help documentation (`:help react-compiler-badge`).
-- `lua/`: Plugin logic.
-- `plugin/`: Automatic plugin initialization.
-- `lib/`: Analyzer script (Node.js).
-
 ## How It Works
 
 The plugin uses Babel to analyze your React code and detect functions that have been optimized by the React Compiler. When an optimized function is detected, it displays a visual indicator (icon) at the end of the line.
