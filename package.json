@@ -4,7 +4,7 @@
     "description": "A Neovim plugin that highlights React components optimized by the React Compiler",
     "main": "lib/analyzer.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "node test/analyzer.test.js"
     },
     "keywords": [
         "neovim",

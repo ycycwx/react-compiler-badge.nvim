@@ -6,6 +6,7 @@ A Neovim plugin that highlights React components optimized by the [React Compile
 
 - 🎯 Automatically detects React components optimized by the React Compiler
 - ✨ Visual indicators with customizable highlights and icons
+- ✕ Optional indicators for React components that were not optimized
 - 🔄 Real-time analysis on file read and write
 - 📝 Supports TypeScript and JavaScript React files
 - ⚙️ Highly configurable appearance
@@ -64,6 +65,9 @@ See `:help react-compiler-badge` for detailed options.
 | :--- | :--- | :--- |
 | `highlight` | `{ bg = "#1a6bbc", fg = "#ffffff", bold = true }` | Highlight group definition. |
 | `icon` | `" Memo✨ "` | Virtual text icon. |
+| `failed_highlight` | `{ bg = "#8a1f11", fg = "#ffffff", bold = true }` | Highlight group definition for components that were not optimized. |
+| `failed_icon` | `" Memo✕ "` | Virtual text icon for components that were not optimized. |
+| `show_failed` | `true` | Whether to show indicators for components that were not optimized. |
 
 ### Example Configuration
 
@@ -75,12 +79,21 @@ require("react-compiler-badge").setup({
     bold = true,
   },
   icon = " Memo✨ ",
+  failed_highlight = {
+    bg = "#8a1f11",
+    fg = "#ffffff",
+    bold = true,
+  },
+  failed_icon = " Memo✕ ",
+  show_failed = true,
 })
 ```
 
 ## How It Works
 
 The plugin uses Babel to analyze your React code and detect functions that have been optimized by the React Compiler. When an optimized function is detected, it displays a visual indicator (icon) at the end of the line.
+
+It also detects component-like functions in the source file during the same Babel pass. If a component-like function is not present in the React Compiler optimized output, the plugin can display the failed indicator instead.
 
 ## License
 

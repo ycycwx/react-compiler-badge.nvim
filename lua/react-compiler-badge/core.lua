@@ -10,6 +10,32 @@ function M.setup(config)
   local ns_id = vim.api.nvim_create_namespace("ReactCompilerMarker")
 
   vim.api.nvim_set_hl(0, "ReactCompilerIcon", config.highlight)
+  vim.api.nvim_set_hl(0, "ReactCompilerFailedIcon", config.failed_highlight)
+
+  local function normalize_result(result)
+    if vim.tbl_islist(result) then
+      return result, {}
+    end
+
+    local optimized = result.optimized or {}
+    local failed = result.failed or {}
+
+    return optimized, failed
+  end
+
+  local function set_marker(bufnr, line, icon, highlight)
+    local row = line - 1
+    if row < 0 then
+      return
+    end
+
+    vim.api.nvim_buf_set_extmark(bufnr, ns_id, row, 0, {
+      virt_text = {
+        { icon, highlight },
+      },
+      virt_text_pos = "eol",
+    })
+  end
 
   local function update_markers(bufnr)
     local ft = vim.bo[bufnr].filetype
@@ -48,15 +74,15 @@ function M.setup(config)
 
         vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
 
-        for _, line in ipairs(result) do
-          local row = line - 1
-          if row >= 0 then
-            vim.api.nvim_buf_set_extmark(bufnr, ns_id, row, 0, {
-              virt_text = {
-                { config.icon, "ReactCompilerIcon" },
-              },
-              virt_text_pos = "eol",
-            })
+        local optimized, failed = normalize_result(result)
+
+        for _, line in ipairs(optimized) do
+          set_marker(bufnr, line, config.icon, "ReactCompilerIcon")
+        end
+
+        if config.show_failed then
+          for _, line in ipairs(failed) do
+            set_marker(bufnr, line, config.failed_icon, "ReactCompilerFailedIcon")
           end
         end
       end)

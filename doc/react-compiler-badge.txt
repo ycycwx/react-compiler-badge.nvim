@@ -32,8 +32,33 @@ function:
         bold = true,
       },
       icon = " Memo✨ ",
+      failed_highlight = {
+        bg = "#8a1f11",
+        fg = "#ffffff",
+        bold = true,
+      },
+      failed_icon = " Memo✕ ",
+      show_failed = true,
     })
 <
 
-vim:tw=78:ts=8:ft=help:norl:
+Options:
 
+highlight~
+  Highlight group definition for optimized components.
+
+icon~
+  Virtual text icon for optimized components.
+
+failed_highlight~
+  Highlight group definition for component-like functions that were not
+  optimized by React Compiler.
+
+failed_icon~
+  Virtual text icon for component-like functions that were not optimized by
+  React Compiler.
+
+show_failed~
+  Whether to show failed optimization indicators. Defaults to true.
+
+vim:tw=78:ts=8:ft=help:norl:
