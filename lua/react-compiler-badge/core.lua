@@ -13,10 +13,6 @@ function M.setup(config)
   vim.api.nvim_set_hl(0, "ReactCompilerFailedIcon", config.failed_highlight)
 
   local function normalize_result(result)
-    if vim.tbl_islist(result) then
-      return result, {}
-    end
-
     local optimized = result.optimized or {}
     local failed = result.failed or {}
 
@@ -81,8 +77,8 @@ function M.setup(config)
         end
 
         if config.show_failed then
-          for _, line in ipairs(failed) do
-            set_marker(bufnr, line, config.failed_icon, "ReactCompilerFailedIcon")
+          for _, item in ipairs(failed) do
+            set_marker(bufnr, item.line, config.failed_icon, "ReactCompilerFailedIcon")
           end
         end
       end)
