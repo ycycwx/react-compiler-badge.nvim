@@ -8,6 +8,7 @@ function M.setup(config)
   local script_path = plugin_root .. "/lib/analyzer.js"
 
   local ns_id = vim.api.nvim_create_namespace("ReactCompilerMarker")
+  local diagnostic_ns_id = vim.api.nvim_create_namespace("ReactCompilerBadgeDiagnostics")
 
   vim.api.nvim_set_hl(0, "ReactCompilerIcon", config.highlight)
   vim.api.nvim_set_hl(0, "ReactCompilerFailedIcon", config.failed_highlight)
@@ -31,6 +32,30 @@ function M.setup(config)
       },
       virt_text_pos = "eol",
     })
+  end
+
+  local function set_diagnostics(bufnr, failed)
+    if not config.show_diagnostics then
+      vim.diagnostic.reset(diagnostic_ns_id, bufnr)
+      return
+    end
+
+    local diagnostics = {}
+    for _, item in ipairs(failed) do
+      local line = item.line
+      if type(line) == "number" and line > 0 then
+        table.insert(diagnostics, {
+          lnum = line - 1,
+          col = 0,
+          severity = vim.diagnostic.severity.WARN,
+          source = "react-compiler-badge",
+          message = item.reason or "React Compiler did not optimize this component",
+          code = item.kind,
+        })
+      end
+    end
+
+    vim.diagnostic.set(diagnostic_ns_id, bufnr, diagnostics, {})
   end
 
   local function update_markers(bufnr)
@@ -71,6 +96,7 @@ function M.setup(config)
         vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
 
         local optimized, failed = normalize_result(result)
+        set_diagnostics(bufnr, failed)
 
         for _, line in ipairs(optimized) do
           set_marker(bufnr, line, config.icon, "ReactCompilerIcon")

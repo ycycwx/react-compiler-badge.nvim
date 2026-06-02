@@ -68,6 +68,7 @@ See `:help react-compiler-badge` for detailed options.
 | `failed_highlight` | `{ bg = "#8a1f11", fg = "#ffffff", bold = true }` | Highlight group definition for components that were not optimized. |
 | `failed_icon` | `" Memo✕ "` | Virtual text icon for components that were not optimized. |
 | `show_failed` | `true` | Whether to show indicators for components that were not optimized. |
+| `show_diagnostics` | `true` | Whether to publish React Compiler failure reasons as Neovim diagnostics. |
 
 ### Example Configuration
 
@@ -86,6 +87,7 @@ require("react-compiler-badge").setup({
   },
   failed_icon = " Memo✕ ",
   show_failed = true,
+  show_diagnostics = true,
 })
 ```
 
@@ -93,7 +95,7 @@ require("react-compiler-badge").setup({
 
 The plugin uses Babel to analyze your React code and detect functions that have been optimized by the React Compiler. When an optimized function is detected, it displays a visual indicator (icon) at the end of the line.
 
-It also detects component-like functions in the source file during the same Babel pass. If a component-like function is not present in the React Compiler optimized output, the plugin can display the failed indicator instead.
+It also detects component-like functions in the source file during the same Babel pass. If a component-like function is not present in the React Compiler optimized output, the plugin can display the failed indicator and publish the compiler reason as a Neovim diagnostic.
 
 ## License
 

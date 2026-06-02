@@ -39,6 +39,7 @@ function:
       },
       failed_icon = " Memo✕ ",
       show_failed = true,
+      show_diagnostics = true,
     })
 <
 
@@ -60,5 +61,9 @@ failed_icon~
 
 show_failed~
   Whether to show failed optimization indicators. Defaults to true.
+
+show_diagnostics~
+  Whether to publish React Compiler failure reasons as Neovim diagnostics.
+  Defaults to true.
 
 vim:tw=78:ts=8:ft=help:norl:

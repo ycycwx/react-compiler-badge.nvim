@@ -14,6 +14,7 @@ M.defaults = {
   },
   failed_icon = " Memo✕ ",
   show_failed = true,
+  show_diagnostics = true,
 }
 
 return M
