@@ -49,4 +49,48 @@ assert.deepEqual(optOutOutput, {
     failed: [],
 });
 
+const failedHookOutput = analyze(`
+import { useQuery } from "@tanstack/react-query";
+import { useClient } from "@/lib/client";
+
+type SampleResult =
+  | { ready: true }
+  | { ready: false; reason: "changed" | "missing" };
+
+export const useSampleResource = () => {
+  const client = useClient();
+
+  return useQuery({
+    queryFn: async (): Promise<SampleResult> => {
+      try {
+        const { ok, item } = await client.resource.load();
+        if (!ok || !item) {
+          return { ready: false, reason: "missing" };
+        }
+
+        if (item.kind === 1) {
+          return { ready: true };
+        }
+
+        const reason = item.kind === 2 ? "changed" : "missing";
+        return { ready: false, reason };
+      } catch {
+        return { ready: false, reason: "missing" };
+      }
+    },
+  });
+};
+`);
+
+assert.deepEqual(failedHookOutput, {
+    optimized: [],
+    failed: [
+        {
+            line: 9,
+            kind: 'CompileError',
+            reason: 'Support value blocks (conditional, logical, optional chaining, etc) within a try/catch statement',
+        },
+    ],
+});
+
 console.log('analyzer tests passed');
