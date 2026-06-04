@@ -49,6 +49,17 @@ assert.deepEqual(optOutOutput, {
     failed: [],
 });
 
+const noMemoNeededOutput = analyze(`
+import { ClientContext } from "./ctx";
+
+export const useClient = () => useNonNullableContext(ClientContext, "ClientContext");
+`);
+
+assert.deepEqual(noMemoNeededOutput, {
+    optimized: [],
+    failed: [],
+});
+
 const failedHookOutput = analyze(`
 import { useQuery } from "@tanstack/react-query";
 import { useClient } from "@/lib/client";
