@@ -61,14 +61,14 @@ use({
 
 See `:help react-compiler-badge` for detailed options.
 
-| Option | Default | Description |
-| :--- | :--- | :--- |
-| `highlight` | `{ bg = "#1a6bbc", fg = "#ffffff", bold = true }` | Highlight group definition. |
-| `icon` | `" Memo✨ "` | Virtual text icon. |
-| `failed_highlight` | `{ bg = "#8a1f11", fg = "#ffffff", bold = true }` | Highlight group definition for components that were not optimized. |
-| `failed_icon` | `" Memo✕ "` | Virtual text icon for components that were not optimized. |
-| `show_failed` | `true` | Whether to show indicators for components that were not optimized. |
-| `show_diagnostics` | `true` | Whether to publish React Compiler failure reasons as Neovim diagnostics. |
+| Option             | Default                                           | Description                                                              |
+| :----------------- | :------------------------------------------------ | :----------------------------------------------------------------------- |
+| `highlight`        | `{ bg = "#1a6bbc", fg = "#ffffff", bold = true }` | Highlight group definition.                                              |
+| `icon`             | `" Memo✨ "`                                      | Virtual text icon.                                                       |
+| `failed_highlight` | `{ bg = "#8a1f11", fg = "#ffffff", bold = true }` | Highlight group definition for components that were not optimized.       |
+| `failed_icon`      | `" Memo✕ "`                                       | Virtual text icon for components that were not optimized.                |
+| `show_failed`      | `true`                                            | Whether to show indicators for components that were not optimized.       |
+| `show_diagnostics` | `true`                                            | Whether to publish React Compiler failure reasons as Neovim diagnostics. |
 
 ### Example Configuration
 
