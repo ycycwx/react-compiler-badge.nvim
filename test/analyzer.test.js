@@ -1,16 +1,16 @@
-const assert = require('node:assert/strict');
-const { spawnSync } = require('node:child_process');
-const path = require('node:path');
+const assert = require("node:assert/strict");
+const { spawnSync } = require("node:child_process");
+const path = require("node:path");
 
 function analyze(source) {
-    const analyzer = path.join(__dirname, '..', 'lib', 'analyzer.js');
-    const result = spawnSync(process.execPath, [analyzer], {
-        input: source,
-        encoding: 'utf8',
-    });
+  const analyzer = path.join(__dirname, "..", "lib", "analyzer.js");
+  const result = spawnSync(process.execPath, [analyzer], {
+    input: source,
+    encoding: "utf8",
+  });
 
-    assert.equal(result.status, 0, result.stderr);
-    return JSON.parse(result.stdout);
+  assert.equal(result.status, 0, result.stderr);
+  return JSON.parse(result.stdout);
 }
 
 const output = analyze(`
@@ -27,14 +27,15 @@ export function NotCompiled() {
 `);
 
 assert.deepEqual(output, {
-    optimized: [2],
-    failed: [
-        {
-            line: 6,
-            kind: 'CompileError',
-            reason: 'Hooks must always be called in a consistent order, and may not be called conditionally. See the Rules of Hooks (https://react.dev/warnings/invalid-hook-call-warning)',
-        },
-    ],
+  optimized: [2],
+  failed: [
+    {
+      line: 6,
+      kind: "CompileError",
+      reason:
+        "Hooks must always be called in a consistent order, and may not be called conditionally. See the Rules of Hooks (https://react.dev/warnings/invalid-hook-call-warning)",
+    },
+  ],
 });
 
 const optOutOutput = analyze(`
@@ -45,8 +46,8 @@ export function OptedOut() {
 `);
 
 assert.deepEqual(optOutOutput, {
-    optimized: [],
-    failed: [],
+  optimized: [],
+  failed: [],
 });
 
 const noMemoNeededOutput = analyze(`
@@ -56,8 +57,8 @@ export const useClient = () => useNonNullableContext(ClientContext, "ClientConte
 `);
 
 assert.deepEqual(noMemoNeededOutput, {
-    optimized: [],
-    failed: [],
+  optimized: [],
+  failed: [],
 });
 
 const failedHookOutput = analyze(`
@@ -94,14 +95,60 @@ export const useSampleResource = () => {
 `);
 
 assert.deepEqual(failedHookOutput, {
-    optimized: [],
-    failed: [
-        {
-            line: 9,
-            kind: 'CompileError',
-            reason: 'Support value blocks (conditional, logical, optional chaining, etc) within a try/catch statement',
-        },
-    ],
+  optimized: [],
+  failed: [
+    {
+      line: 9,
+      kind: "CompileError",
+      reason:
+        "Support value blocks (conditional, logical, optional chaining, etc) within a try/catch statement",
+    },
+  ],
 });
 
-console.log('analyzer tests passed');
+const objectPropOutput = analyze(`
+const registry = {
+    useSyntheticFeature: () => ({ value: externalValue }),
+}
+`);
+
+assert.deepEqual(objectPropOutput, {
+  optimized: [],
+  failed: [],
+});
+
+const thinHookWrapperOutput = analyze(`
+import { use } from "react"
+
+const ValueContext = {}
+
+export const useValue = () => use(ValueContext)
+`);
+
+assert.deepEqual(thinHookWrapperOutput.failed, []);
+
+const namedFunctionExprOutput = analyze(`
+const registry = {
+  feature: function useSyntheticFeature() {
+    return { value: externalValue }
+  },
+}
+`);
+
+assert.deepEqual(namedFunctionExprOutput, {
+  optimized: [],
+  failed: [],
+});
+
+const componentObjectPropOutput = analyze(`
+const registry = {
+  Widget: () => <div />,
+}
+`);
+
+assert.deepEqual(componentObjectPropOutput, {
+  optimized: [],
+  failed: [],
+});
+
+console.log("analyzer tests passed");
